@@ -1,0 +1,59 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        request.auth.token.email == 'admin@ceylanlogistics.com';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Products collection
+    match /products/{productId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isOwner(resource.data.createdBy) || isAdmin();
+      allow delete: if isOwner(resource.data.createdBy) || isAdmin();
+    }
+    
+    // Market Reports collection
+    match /marketReports/{reportId} {
+      allow read: if isAuthenticated() && 
+        isOwner(resource.data.createdBy);
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+    
+    // Matchmaking Reports collection
+    match /matchmakingReports/{reportId} {
+      allow read: if isAuthenticated() && 
+        isOwner(resource.data.createdBy);
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+    
+    // Visibility Reports collection
+    match /visibilityReports/{reportId} {
+      allow read: if isAuthenticated() && 
+        isOwner(resource.data.createdBy);
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+  }
+} 
