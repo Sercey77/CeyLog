@@ -5,29 +5,43 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Validate the response structure
-function validateContentResponse(content: any): content is {
+interface RequestBody {
+  name: string;
+  description: string;
+  sector: string;
+}
+
+interface ContentResponse {
   seoText: string;
   linkedinPost: string;
   ebayListing: string;
   emailPitch: string;
-} {
+}
+
+// Validate the response structure
+function validateContentResponse(content: unknown): content is ContentResponse {
   return (
-    content &&
-    typeof content.seoText === 'string' &&
-    typeof content.linkedinPost === 'string' &&
-    typeof content.ebayListing === 'string' &&
-    typeof content.emailPitch === 'string' &&
-    content.seoText.length > 0 &&
-    content.linkedinPost.length > 0 &&
-    content.ebayListing.length > 0 &&
-    content.emailPitch.length > 0
+    typeof content === 'object' &&
+    content !== null &&
+    'seoText' in content &&
+    'linkedinPost' in content &&
+    'ebayListing' in content &&
+    'emailPitch' in content &&
+    typeof (content as ContentResponse).seoText === 'string' &&
+    typeof (content as ContentResponse).linkedinPost === 'string' &&
+    typeof (content as ContentResponse).ebayListing === 'string' &&
+    typeof (content as ContentResponse).emailPitch === 'string' &&
+    (content as ContentResponse).seoText.length > 0 &&
+    (content as ContentResponse).linkedinPost.length > 0 &&
+    (content as ContentResponse).ebayListing.length > 0 &&
+    (content as ContentResponse).emailPitch.length > 0
   );
 }
 
 export async function POST(request: Request) {
   try {
-    const { name, description, sector } = await request.json();
+    const body = await request.json() as RequestBody;
+    const { name, description, sector } = body;
 
     if (!name || !description || !sector) {
       return NextResponse.json(
@@ -100,7 +114,7 @@ Return each content piece as a separate string in JSON format:
       throw new Error('No response from OpenAI');
     }
 
-    const content = JSON.parse(response);
+    const content = JSON.parse(response) as unknown;
     
     if (!validateContentResponse(content)) {
       throw new Error('Invalid response format from OpenAI');

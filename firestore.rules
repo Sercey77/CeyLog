@@ -9,7 +9,7 @@ service cloud.firestore {
     
     function isAdmin() {
       return isAuthenticated() && 
-        request.auth.token.email == 'admin@ceylanlogistics.com';
+        request.auth.token.email == 'serdar@ceylanlogistics.co.uk';
     }
     
     function isOwner(userId) {
@@ -34,12 +34,11 @@ service cloud.firestore {
     
     // Market Reports collection
     match /marketReports/{reportId} {
-      allow read: if isAuthenticated() && 
-        isOwner(resource.data.createdBy);
-      allow create: if isAuthenticated();
+      allow read: if isAuthenticated() && isOwner(resource.data.createdBy);
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.createdBy;
       allow update, delete: if isAdmin();
     }
-    
+
     // Matchmaking Reports collection
     match /matchmakingReports/{reportId} {
       allow read: if isAuthenticated() && 
@@ -47,7 +46,7 @@ service cloud.firestore {
       allow create: if isAuthenticated();
       allow update, delete: if isAdmin();
     }
-    
+
     // Visibility Reports collection
     match /visibilityReports/{reportId} {
       allow read: if isAuthenticated() && 
@@ -55,5 +54,13 @@ service cloud.firestore {
       allow create: if isAuthenticated();
       allow update, delete: if isAdmin();
     }
+
+    // ✅ Yeni Eklenen Email Logs collection
+    match /emailLogs/{logId} {
+      allow read: if isAuthenticated() && 
+        isOwner(resource.data.userId);
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
   }
-} 
+}

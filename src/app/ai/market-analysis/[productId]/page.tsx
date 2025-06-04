@@ -68,10 +68,14 @@ export default function MarketAnalysisPage({
     setSuccess('');
 
     try {
+      // Get the current user's ID token
+      const token = await auth.currentUser?.getIdToken();
+      if (!token) throw new Error('Not authenticated');
       const response = await fetch('/api/generate-market-analysis', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: productData.name,

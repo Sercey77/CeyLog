@@ -9,6 +9,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Logo */}
+      <div className="flex justify-center pt-8 pb-2">
+        <Image
+          src="/ceylan-logo.png"
+          alt="Ceylan Logistics Logo"
+          width={130}
+          height={111}
+          priority
+        />
+      </div>
       {/* Navigation Bar */}
       <nav className="fixed w-full bg-white shadow-sm z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,7 +72,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Empowering UK–Turkey Trade with AI
+              Empowering UK & TR Trade with AI
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8">
               Connect, Analyze, and Expand Your Business
@@ -159,7 +169,7 @@ export default function Home() {
             {/* Pro Plan */}
             <div className="bg-blue-600 rounded-lg shadow-lg p-8 text-white">
               <h3 className="text-2xl font-bold mb-4">Pro Membership</h3>
-              <p className="text-4xl font-bold mb-6">£99<span className="text-lg opacity-75">/month</span></p>
+              <p className="text-4xl font-bold mb-6">£9.99<span className="text-lg opacity-75">/month</span></p>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center">
                   <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -205,18 +215,18 @@ export default function Home() {
             {[
               {
                 quote: "CeyLog has transformed how we approach international trade. The AI insights are invaluable.",
-                author: "Sarah Johnson",
-                role: "Export Manager, UK"
+                author: "Serdar Ceylan",
+                role: "Director, UK"
               },
               {
                 quote: "The buyer matchmaking feature helped us find new markets we never considered before.",
-                author: "Mehmet Yılmaz",
+                author: "Murat Dilcioglu",
                 role: "Business Development, Turkey"
               },
               {
                 quote: "Outstanding platform that makes cross-border trade simple and efficient.",
-                author: "David Chen",
-                role: "Logistics Director"
+                author: "Emre Erceis",
+                role: "Business Development, Turkey"
               }
             ].map((testimonial, index) => (
               <div key={index} className="bg-gray-50 p-6 rounded-lg">
@@ -249,8 +259,8 @@ export default function Home() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Legal</h4>
               <ul className="space-y-2">
-                <li><Link href="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="text-gray-400 hover:text-white">Terms of Service</Link></li>
+                <li><Link href="/privacy-policy" className="text-gray-400 hover:text-white">Privacy Policy</Link></li>
+                <li><Link href="/terms-of-service" className="text-gray-400 hover:text-white">Terms of Service</Link></li>
               </ul>
             </div>
             <div>
@@ -262,7 +272,7 @@ export default function Home() {
                   </svg>
                 </a>
               </div>
-              <p className="mt-4 text-gray-400">contact@ceylog.com</p>
+              <p className="mt-4 text-gray-400">contact@ceylanlogistics.co.uk</p>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
